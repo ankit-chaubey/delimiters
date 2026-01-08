@@ -1,0 +1,9 @@
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments (optional but recommended)
+venv/
+.env/
