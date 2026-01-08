@@ -438,7 +438,7 @@ this is the formatting layer you want.
 ## 📄 License
 
 This project is licensed under the **MIT License**.  
-See the full [license](LICENCE) or text here: https://opensource.org/licenses/MIT
+See the full [license](LICENSE) or text here: https://opensource.org/licenses/MIT
 
 © 2026 **Ankit Chaubey**. All rights reserved.  
 This project was initially developed for personal use and is now released publicly.
