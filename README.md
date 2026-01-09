@@ -289,7 +289,7 @@ PR checklist:
   - parse() is offline-only and no longer resolves mentions.
   - resolve_mentions(client, entities) added to explicitly resolve tg://user?id references to proper mention entities.
 
-(Keep a full CHANGELOG.md in the repo for detailed history.)
+(Check CHANGELOG.md in the repo for detailed history.)
 
 ---
 
