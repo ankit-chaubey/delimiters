@@ -6,7 +6,7 @@ from .custom_markdown import CustomMarkdown
 from .html_ext import CustomHtmlParser
 
 # Unified API
-from .api import parse, unparse
+from .api import parse, unparse, resolve_mentions
 
 __all__ = [
     "markdown",
@@ -14,7 +14,9 @@ __all__ = [
     "CustomHtmlParser",
     "parse",
     "unparse",
+    "resolve_mentions",
 ]
+
 
 """
 📦 Delimiters advanced add-ons for Telethon

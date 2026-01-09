@@ -1,6 +1,6 @@
 """
 Safe HTML <-> Telegram entity parser
-Production ready and surrogate safe
+Production-ready and surrogate-safe
 
 📦 Delimiters advanced add-ons for Telethon
 👤 Created by Ankit Chaubey | https://github.com/ankit-chaubey/delimiters
@@ -40,7 +40,6 @@ from telethon.tl.types import (
     TypeMessageEntity,
 )
 
-
 # ===============================
 # HTML -> Telegram entities
 # ===============================
@@ -70,16 +69,22 @@ class HTMLToTelegramParser(HTMLParser):
         match tag:
             case "b" | "strong":
                 EntityType = MessageEntityBold
+
             case "i" | "em":
                 EntityType = MessageEntityItalic
+
             case "u":
                 EntityType = MessageEntityUnderline
+
             case "s" | "del":
                 EntityType = MessageEntityStrike
 
+            # ✅ FIXED: collapsed / expandable blockquote
             case "blockquote":
                 EntityType = MessageEntityBlockquote
-                args["collapsed"] = "collapsed" in attrs
+                args["collapsed"] = (
+                    "expandable" in attrs or "collapsed" in attrs
+                )
 
             case "span":
                 if attrs.get("class") == "tg-spoiler":
@@ -101,6 +106,7 @@ class HTMLToTelegramParser(HTMLParser):
                 else:
                     EntityType = MessageEntityCode
 
+            # ✅ FIXED: mention detection
             case "a":
                 href = attrs.get("href")
                 if not href:
@@ -109,6 +115,15 @@ class HTMLToTelegramParser(HTMLParser):
                 if href.startswith("mailto:"):
                     EntityType = MessageEntityEmail
                     args["email"] = href[7:]
+
+                elif href.startswith("tg://user?id="):
+                    try:
+                        uid = int(href.split("=", 1)[1])
+                    except ValueError:
+                        return
+                    EntityType = MessageEntityMentionName
+                    args["user_id"] = uid
+
                 else:
                     EntityType = MessageEntityTextUrl
                     args["url"] = del_surrogate(href)
@@ -146,7 +161,6 @@ class HTMLToTelegramParser(HTMLParser):
         if entity:
             self.entities.append(entity)
 
-
 # ===============================
 # Telegram entities -> HTML
 # ===============================
@@ -157,8 +171,15 @@ ENTITY_TO_HTML = {
     MessageEntityUnderline: ("<u>", "</u>"),
     MessageEntityStrike: ("<del>", "</del>"),
     MessageEntityCode: ("<code>", "</code>"),
-    MessageEntityBlockquote: (lambda e, _: (f"<blockquote{' collapsed' if getattr(e, 'collapsed', False) else ''}>", "</blockquote>")),
     MessageEntitySpoiler: ("<tg-spoiler>", "</tg-spoiler>"),
+
+    # ✅ Correct HTML emission
+    MessageEntityBlockquote: (
+        lambda e, _: (
+            f"<blockquote{' expandable' if getattr(e, 'collapsed', False) else ''}>",
+            "</blockquote>",
+        )
+    ),
 
     MessageEntityPre: lambda e, _: (
         f"<pre><code class='language-{e.language}'>",
@@ -190,7 +211,6 @@ ENTITY_TO_HTML = {
         "</tg-emoji>",
     ),
 }
-
 
 # ===============================
 # Public API
@@ -248,7 +268,6 @@ class CustomHtmlParser:
         next_escape = len(text)
         while insert_at:
             pos, _, value = insert_at.pop()
-
             while within_surrogate(text, pos):
                 pos += 1
 

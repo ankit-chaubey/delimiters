@@ -8,6 +8,7 @@ These delimiters are OPTIONAL sugar on top of:
 - native markdown
 - universal URL-based markdown
 
+===============================
 
 📦 Delimiters advanced add-ons for Telethon
 👤 Created by Ankit Chaubey | https://github.com/ankit-chaubey/delimiters
@@ -20,6 +21,23 @@ These delimiters are OPTIONAL sugar on top of:
 
 from telethon.extensions import markdown
 from telethon import types
+from telethon.tl import TLObject
+from telethon.tl.types import (
+    MessageEntityBold,
+    MessageEntityItalic,
+    MessageEntityCode,
+    MessageEntityPre,
+    MessageEntityEmail,
+    MessageEntityUrl,
+    MessageEntityTextUrl,
+    MessageEntityMentionName,
+    MessageEntityUnderline,
+    MessageEntityStrike,
+    MessageEntityBlockquote,
+    MessageEntityCustomEmoji,
+    MessageEntitySpoiler,
+    TypeMessageEntity,
+)
 
 # ===============================
 # Inline formatting
