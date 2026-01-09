@@ -14,6 +14,7 @@ from .delimiters import (
     CustomHtmlParser,
     parse,
     unparse,
+    resolve_mentions,
 )
 
 __all__ = [
@@ -22,4 +23,5 @@ __all__ = [
     "CustomHtmlParser",
     "parse",
     "unparse",
+    "resolve_mentions",
 ]
