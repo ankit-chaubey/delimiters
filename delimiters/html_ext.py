@@ -79,7 +79,6 @@ class HTMLToTelegramParser(HTMLParser):
             case "s" | "del":
                 EntityType = MessageEntityStrike
 
-            # ✅ FIXED: collapsed / expandable blockquote
             case "blockquote":
                 EntityType = MessageEntityBlockquote
                 args["collapsed"] = (
@@ -117,13 +116,8 @@ class HTMLToTelegramParser(HTMLParser):
                     args["email"] = href[7:]
 
                 elif href.startswith("tg://user?id="):
-                    try:
-                        uid = int(href.split("=", 1)[1])
-                    except ValueError:
-                        return
-                    EntityType = MessageEntityMentionName
-                    args["user_id"] = uid
-
+                    EntityType = MessageEntityTextUrl
+                    args["url"] = href
                 else:
                     EntityType = MessageEntityTextUrl
                     args["url"] = del_surrogate(href)
@@ -281,3 +275,8 @@ class CustomHtmlParser:
 
         text = escape(text[:next_escape]) + text[next_escape:]
         return del_surrogate(text)
+
+
+# ===============================
+# HTML -> Mention (fixed) V0.1.3
+# ===============================

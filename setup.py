@@ -9,7 +9,7 @@ long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="delimiters",
-    version="0.1.2",
+    version="0.1.3",
 
     author="Ankit Chaubey",
     author_email="m.ankitchaubey@gmail.com",

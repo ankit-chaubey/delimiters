@@ -54,14 +54,9 @@ async def resolve_mentions(
     for e in entities:
         url = None
 
-        # Markdown parser path
+        # Markdown & Html parser path
         if isinstance(e, MessageEntityTextUrl):
             url = e.url
-
-        # HTML parser path (IMPORTANT)
-        elif isinstance(e, MessageEntityUrl):
-            # URL lives in the message text itself
-            url = text[e.offset : e.offset + e.length]
 
         if url:
             m = _MENTION_RE.match(url)
@@ -142,3 +137,7 @@ def unparse(
         return CustomHtmlParser.unparse(text, entities)
 
     raise ValueError(f"Unknown unparse mode: {mode!r}")
+
+# ===============================
+# HTML -> Mention (fixed) V0.1.3
+# ===============================
